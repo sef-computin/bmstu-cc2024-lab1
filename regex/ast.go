@@ -50,7 +50,9 @@ func (c *Character) Assemble(ctx *fsm.Context) *nfa.Fragment {
 }
 
 func (c *Character) SubtreeString() string {
-	return fmt.Sprintf("\x1b[32m%s('%s')\x1b[32m", c.Ty, string(c.V))
+	// return fmt.Sprintf("\x1b[32m%s('%s')\x1b[32m", c.Ty, string(c.V))
+
+	return fmt.Sprintf("%s('%s')", c.Ty, string(c.V))
 }
 
 type Union struct {
@@ -94,7 +96,9 @@ func (u *Union) Assemble(ctx *fsm.Context) *nfa.Fragment {
 }
 
 func (u *Union) SubtreeString() string {
-	return fmt.Sprintf("\x1b[36m%s(%s, %s\x1b[36m)\x1b[0m", u.Ty, u.Ope1.SubtreeString(), u.Ope2.SubtreeString())
+	// return fmt.Sprintf("\x1b[36m%s(%s, %s\x1b[36m)\x1b[0m", u.Ty, u.Ope1.SubtreeString(), u.Ope2.SubtreeString())
+
+	return fmt.Sprintf("%s(%s, %s)", u.Ty, u.Ope1.SubtreeString(), u.Ope2.SubtreeString())
 }
 
 type Concat struct {
@@ -137,7 +141,9 @@ func (c *Concat) Assemble(ctx *fsm.Context) *nfa.Fragment {
 }
 
 func (c *Concat) SubtreeString() string {
-	return fmt.Sprintf("\x1b[31m%s(%s, %s\x1b[31m)\x1b[0m", c.Ty, c.Ope1.SubtreeString(), c.Ope2.SubtreeString())
+	// return fmt.Sprintf("\x1b[31m%s(%s, %s\x1b[31m)\x1b[0m", c.Ty, c.Ope1.SubtreeString(), c.Ope2.SubtreeString())
+
+	return fmt.Sprintf("%s(%s, %s)", c.Ty, c.Ope1.SubtreeString(), c.Ope2.SubtreeString())
 }
 
 type Star struct {
@@ -178,6 +184,8 @@ func (s *Star) Assemble(ctx *fsm.Context) *nfa.Fragment {
 }
 
 func (s *Star) SubtreeString() string {
-	return fmt.Sprintf("\x1b[33m%s(%s\x1b[33m)\x1b[0m", s.Ty, s.Ope.SubtreeString())
+	// return fmt.Sprintf("\x1b[33m%s(%s\x1b[33m)\x1b[0m", s.Ty, s.Ope.SubtreeString())
+
+	return fmt.Sprintf("%s(%s)", s.Ty, s.Ope.SubtreeString())
 }
 

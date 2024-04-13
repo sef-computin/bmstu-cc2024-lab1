@@ -2,7 +2,7 @@ package nfa
 
 import (
 	"bmstu/cc2024/lab1/fsm"
-	"fmt"
+	// "fmt"
 )
 
 type NFA struct {
@@ -22,8 +22,11 @@ func NewNFA(init fsm.State, accepts fsm.StateSet, rules NFARulesMap) *NFA {
 func (this *NFA) GetAllStates() fsm.StateSet {
 	ret := fsm.StateSet{}
 
-	for key := range this.Rules {
+	for key, dst := range this.Rules {
 		ret.Add(key.Src)
+    for _, st := range dst.GetAll(){
+      ret.Add(st)
+    }
 	}
 	return ret
 }
@@ -48,7 +51,6 @@ func (this *NFA) CalcDst(q fsm.State, c rune) (*fsm.StateSet, bool) {
 
 func (this *NFA) ToWithoutEpsilon() {
 	if isSubset(&this.AcceptStates, this.epsilonClosure(this.InitialState)) {
-    fmt.Println("is subset")
 		this.AcceptStates.Add(this.InitialState)
 	}
 	this.Rules = this.removeEpsilonRule()
@@ -66,7 +68,6 @@ func (this *NFA) removeEpsilonRule() (newRule NFARulesMap) {
 
 	for _, q := range states.GetAll() {
 		for c := range sym {
-      fmt.Printf("<%v> <%v>: %v\n", q, c, this.epsilonClosure(q))
 			for _, mid := range this.epsilonClosure(q).GetAll() {
 				dst := this.epsilonExpand(mid, c)
 

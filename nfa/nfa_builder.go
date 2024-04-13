@@ -21,18 +21,19 @@ func NewFragment() *Fragment {
 
 func (frg *Fragment) AddRule(from fsm.State, c rune, next fsm.State) {
   fmt.Println()
-  fmt.Println("[DEBUG] adding rule: ", from.String(), string(c), next.String())  
+  fmt.Println("[DEBUG] adding rule: ", from.String(), "--", string(c), "->", next.String())  
 
 	r := frg.Rules
 
-  fmt.Println(r)
-
 	_, ok := r[NewNFARule(from, c)]
-  fmt.Println("ok = ", ok)
+  // fmt.Println("ok = ", ok)
 	if !ok {
     r[NewNFARule(from, c)] = fsm.NewStateSet()
 	}
 	r.AddDst(NewNFARule(from, c), next)
+
+  fmt.Println("Current Rules:")
+  fmt.Println(r.ToString())
 }
 
 func (frg *Fragment) CreateSkeleton() (Skeleton *Fragment) {
@@ -45,7 +46,7 @@ func (frg *Fragment) MergeRule(frg2 *Fragment) (synthesizedFrg *Fragment) {
 	synthesizedFrg = frg.CreateSkeleton()
   
   fmt.Println()
-  fmt.Println("[DEBUG] frg1: ", synthesizedFrg) 
+  fmt.Println("[DEBUG] frg1: \n", synthesizedFrg.Rules.ToString()) 
   fmt.Println()
 
 	for k, v := range frg2.Rules {

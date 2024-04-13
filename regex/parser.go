@@ -7,7 +7,6 @@ import (
 	"log"
 )
 
-
 type Parser struct {
 	tokens []token.Token
 	look   token.Token
@@ -37,7 +36,7 @@ func (psr *Parser) move() {
 
 func (psr *Parser) moveWithValidation(expect token.Type) {
 	if psr.look.Ty != expect {
-		err := fmt.Sprintf("[syntax error] expect:\x1b[31m%s\x1b[0m actual:\x1b[31m%s\x1b[0m", expect, psr.look.Ty)
+		err := fmt.Sprintf("[syntax error] expect:%s actual:%s", expect, psr.look.Ty)
 		log.Fatal(err)
 	}
 	psr.move()

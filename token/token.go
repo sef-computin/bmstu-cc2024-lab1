@@ -33,12 +33,12 @@ func (k Type) String() string {
 }
 
 type Token struct {
-	V  rune 
+	V  rune
 	Ty Type
 }
 
 func (t Token) String() string {
-	return fmt.Sprintf("V -> \x1b[32m%v\x1b[0m\tKind -> \x1b[32m%v\x1b[0m", string(t.V), t.Ty)
+	return fmt.Sprintf("V -> %v \tKind -> %v", string(t.V), t.Ty)
 }
 
 // NewToken returns a new Token.

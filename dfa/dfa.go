@@ -1,13 +1,26 @@
 // Package dfa implements Deterministic Finite Automaton(DFA).
 package dfa
 
-import "bmstu/cc2024/lab1/fsm"
+import (
+	"bmstu/cc2024/lab1/fsm"
+)
 
 type DFA struct {
 	InitialState fsm.State
 	AcceptStates fsm.StateSet
 	Rules        DFARulesMap
 }
+
+func (this *DFA) GetAllStates() fsm.StateSet {
+	ret := fsm.StateSet{}
+
+	for key, dst := range this.Rules {
+		ret.Add(key.Src)
+    ret.Add(dst)
+	}
+	return ret
+}
+
 
 func NewDFA(init fsm.State, accepts fsm.StateSet, rules DFARulesMap) *DFA {
 	return &DFA{
@@ -17,30 +30,32 @@ func NewDFA(init fsm.State, accepts fsm.StateSet, rules DFARulesMap) *DFA {
 	}
 }
 
-// // Minimize minimizes the DFA.
-// func (dfa *DFA) Minimize() {
-// 	states := .NewSet(dfa.I)
-// 	for _, v := range dfa.Rules {
-// 		states.Add(v)
-// 	}
-// 	n := states.N()
-//
-// 	eqMap := map[utils.State]utils.State{}
-// 	for i := 0; i < n; i++ {
-// 		q1 := utils.NewState(i)
-// 		for j := i + 1; j < n; j++ {
-// 			q2 := utils.NewState(j)
-// 			if !dfa.isEquivalent(q1, q2) {
-// 				continue
-// 			}
-// 			if _, ok := eqMap[q2]; ok {
-// 				continue
-// 			}
-// 			eqMap[q2] = q1
-// 			dfa.mergeState(q1, q2)
-// 		}
-// 	}
-// }
+func (dfa *DFA) Minimize() {
+	states := fsm.NewStateSet()
+  states.Add(dfa.InitialState)
+	for _, v := range dfa.Rules {
+		states.Add(v)
+	}
+	n := states.Len()
+
+	eqMap := map[fsm.State]fsm.State{}
+	for i := 0; i < n; i++ {
+		q1 := fsm.NewState(i)
+		for j := i + 1; j < n; j++ {
+			q2 := fsm.NewState(j)
+			if !dfa.isEquivalent(q1, q2) {
+				continue
+			}
+			if _, ok := eqMap[q2]; ok {
+				continue
+			}
+			eqMap[q2] = q1
+      // fmt.Println("Merging ", q1.String(), "and", q2.String())
+			dfa.mergeState(q1, q2)
+		}
+	}
+  // fmt.Println("eqMap: ", eqMap)
+}
 
 func (dfa *DFA) replaceState(to, from fsm.State) {
 	rules := dfa.Rules

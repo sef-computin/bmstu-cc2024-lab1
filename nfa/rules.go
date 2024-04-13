@@ -8,7 +8,7 @@ import (
 type NFARulesMap map[NFARule]*fsm.StateSet
 
 func (this *NFARulesMap) AddDst(rule NFARule, st fsm.State) {
-	// fmt.Println("adding new dst:", rule, st)
+	/* fmt.Println("adding new dst:", this, rule, st) */
 	// fmt.Println((*this)[rule][st])
   if _, ok := (*this)[rule]; !ok {
 		(*this)[rule] = fsm.NewStateSet()
